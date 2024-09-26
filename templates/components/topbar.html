@@ -1,0 +1,60 @@
+{% load static %}
+
+<nav class="topbar-container">
+    <div class="topbar-item logo-container">
+        <img class="logo" src="{% static 'images/logo.png' %}" style="margin-left: 20px;" alt="SetorStyle logo">
+        <p class="logo-name">SetorStyle</p>
+    </div>
+    <div class="topbar-item col-5" style="flex:1;">
+        {% block content_topbar %}
+            <div class="input-container d-flex align-items-center">
+                <i class="fas fa-search mr-2 text-color-default"></i>
+                <input type="text" class="search-input text-color-default" placeholder="Pesquisar...">
+            </div>
+        {% endblock %}
+    </div>
+    <div class="topbar-item">
+        <a href="#"><i class="fas fa-home"></i> Link 1</a>
+    </div>
+</nav>
+
+<style>
+    .topbar-container {
+        width: 100%;
+        height: var(--topbar-height);
+        background-color: var(--base-color);
+        border-bottom: solid 1px var(--base-line-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 25px;
+    }
+
+    .topbar-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+    
+    .search-input:focus {
+        outline: none;
+        border: none;
+        border-bottom: solid 1px var(--base-text-color);
+    }
+    
+    .search-input {
+        transition: all 0.3s ease;
+        background-color: transparent;
+        border: none;
+        border-bottom: solid 1px transparent;
+        width: 100%;
+    }
+    
+    .input-container {
+        width: 100%;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.137);
+        padding: 10px 15px;
+    }
+</style>

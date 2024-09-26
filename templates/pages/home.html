@@ -1,0 +1,58 @@
+<div class="container-section mt-5">
+    <div class="row" style="gap: 15px">
+        <div class="col box-section">
+            <h1 class="text-color-default">aaaaaaaaaaaa</h1>
+        </div>
+        <div class="col-4 box-section">
+            <h3 class="text-color-default">Setores</h3>
+            <br>
+            <table class="w-full table-home">
+                <tr>
+                    <th class="text-center text-color-table-title">
+                        #
+                    </th>
+                    <th class="text-center text-color-table-title">
+                        Nome
+                    </th>
+                    <th class="text-center text-color-table-title">
+                        Descrição
+                    </th>
+                </tr>
+                {% for sector in sectors %}
+                    <tr>
+                        <td class="text-center text-color-default">{{ sector.id }}</td>
+                        <td class="text-center text-color-default">{{ sector.name }}</td>
+                        <td class="text-center text-color-default">{{ sector.description }}</td>
+                    </tr>
+                    <br>
+                {% empty %}
+                    <tr>
+                        <td colspan="100%" class="text-center w-full text-color-default">Nenhum setor cadastrado!</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .box-section {
+        background-color: rgba(255, 255, 255, 0.06);
+        border-radius: 5px;
+        padding: 20px;
+    }
+
+    .container-section {
+        margin: 0 80px;
+    }
+    
+    .table-home > tbody > tr > td {
+        padding: 10px 0;
+    }
+    .table-home > tbody > tr > th {
+        font-size: 18px;
+    }
+    .table-home > tbody > tr {
+        border-bottom: 1px solid var(--base-line-color-2);
+    }
+</style>
