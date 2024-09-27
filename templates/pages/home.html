@@ -1,58 +1,290 @@
-<div class="container-section mt-5">
-    <div class="row" style="gap: 15px">
-        <div class="col box-section">
-            <h1 class="text-color-default">aaaaaaaaaaaa</h1>
+
+<div class="container-section my-5">
+    <div class="row align-items-start">
+        <div class="col-4">
+            <div class="box-section text-left text-color-default">
+                {% if form_sector.instance.id is not None %}
+                    <h1>Setor {{ sector.name }}</h1>
+                    <div class="d-flex">
+                        <form class="form-component w-full" action="{% url 'update_sector' id=form_sector.instance.id %}" enctype="multipart/form-data">
+                {% else %}
+                    <h1>Novo Setor</h1>
+                    <div class="d-flex">
+                        <form class="form-component w-full" action="{% url 'add_sector' %}"  enctype="multipart/form-data">
+                {% endif %}
+                    {% csrf_token %}
+                    {{ form_sector.as_p }}
+                    <input type="submit" class="btn-submit"
+                        value="{% if sector %}Atualizar setor{% else %}Criar setor{% endif %}">
+                    </form>
+                </div>
+            </div>
+
+            {% if form_sector.instance.id %}
+                <div class="box-section text-left text-color-default">
+                    {% if form_sector.instance.id %}
+                    <h1>Adicionar Banner</h1>
+                    <div class="d-flex">
+                        <form class="form-component w-full" action="{% url 'add_banner' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="text" name="sector" value="{{ form_sector.instance.id }}" hidden="true">
+                            {{ form_banner.as_p }}
+                            <input type="submit" class="btn-submit" value="Adicionar Banner">
+                        </form>
+                    </div>
+                    <hr>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
-        <div class="col-4 box-section">
-            <h3 class="text-color-default">Setores</h3>
+        <div class="col box-section">
+            <div class="container d-flex justify-content-between align-items-center flex-xl-row flex-column">
+                <h3 class="text-color-default">Setores</h3>
+                <div class="input-container d-flex align-items-center ml-xl-4" data-role="box-search">
+                    <i class="fas fa-search mr-2 text-color-default"></i>
+                    <input type="text" id="search-sectors-input" class="search-input text-color-default"
+                        placeholder="Pesquisar...">
+                </div>
+            </div>
             <br>
             <table class="w-full table-home">
-                <tr>
-                    <th class="text-center text-color-table-title">
-                        #
-                    </th>
-                    <th class="text-center text-color-table-title">
-                        Nome
-                    </th>
-                    <th class="text-center text-color-table-title">
-                        Descrição
-                    </th>
-                </tr>
-                {% for sector in sectors %}
+                <thead>
                     <tr>
-                        <td class="text-center text-color-default">{{ sector.id }}</td>
+                        <th class="text-center text-color-table-title" style="width: 5px;">
+                            <p>
+                                #
+                            </p>
+                        </th>
+                        <th class="text-center text-color-table-title">
+                            <p>Nome</p>
+                        </th>
+                        <th class="text-center text-color-table-title">
+                            <p>Descrição</p>
+                        </th>
+                        <th colspan="2" class="text-center text-color-table-title">
+                            <p>Ações</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="sector-table">
+                    {% for sector in sectors %}
+                    <tr>
+                        <td class="text-center text-color-default" style="width: 5px;">{{ sector.id }}</td>
                         <td class="text-center text-color-default">{{ sector.name }}</td>
                         <td class="text-center text-color-default">{{ sector.description }}</td>
+                        <td class="text-center text-color-default redirect-component"
+                            data-url='{% url "details_sector" id=sector.id %}' style="cursor: pointer;"><i
+                                class="fas fa-edit"></i></td>
+                        <td class="text-center text-color-default" onclick="deleteSector('{{ sector.id }}');"><i
+                                class="fas fa-trash-alt"></i></td>
                     </tr>
-                    <br>
-                {% empty %}
+                    {% empty %}
                     <tr>
-                        <td colspan="100%" class="text-center w-full text-color-default">Nenhum setor cadastrado!</td>
+                        <td colspan="100%" class="text-center w-full text-color-default">Nenhum setor cadastrado!
+                        </td>
                     </tr>
-                {% endfor %}
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
+    {% if form_banners %}
+        <hr class="mx-2 mt-2 mb-4" style="background-color: var(--base-line-color-2);">
+        <h1 class="text-color-default ml-5">Banners do setor</h1>
+        {% for form_banner in form_banners %}
+            <div class="row box-section text-left text-color-default">
+                <div class="col-4">
+                    <h2>Banner {{ form_banner.instance.title }}</h2>
+                    <div class="d-flex">
+                        <form class="form-component w-full" action="{% url 'update_banner' id=form_banner.instance.id %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="text" name="sector" value="{{ form_sector.instance.id }}" hidden="true">
+                            {{ form_banner.as_p }}
+                            <div class="d-flex w-full justify-content-around">
+                                <input type="submit" class="btn-submit" value="Salvar Banner">
+                                <div class="btn-submit redirect-component" onclick="deleteBanner('{{ form_banner.instance.id }}');">Deletar Banner</div> 
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Coluna do preview -->
+                <div class="col preview-column d-flex align-items-center">
+                    <div id="preview-{{ form_banner.instance.id }}" class="preview-container ml-2 d-flex justify-content-center align-items-center">
+                        {% if form_banner.instance.image %}
+                            {{ form_banner.instance.get_presentation }}
+                        {% else %}
+                            <i class="fas fa-image icon"></i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <h3>Esse setor não possui nenhum bannner</h3>
+        </div>
+        {% endfor %}
+    {% endif %}
 </div>
 
 <style>
+    .errorlist {
+        color: var(--base-text-error-color);
+    }
+    
+    .btn-submit {
+        color: rgb(29, 29, 29);
+        background-color: aquamarine;
+        text-decoration: none !important;
+        display: inline-block;
+        font-weight: 400;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+    
+    .btn-submit:hover {
+        background-color: #9fd4cd;
+    }
+    
+    .icon {
+        font-size: 80px;
+    }
+    
+    .preview-container {
+        width: 100%;
+        aspect-ratio:  16 / 9;
+        border-radius: 5px;
+        background-color: rgba(0, 255, 255, 0.164);
+    }
+    
+    .preview-column {
+        border-left: 1px solid var(--base-line-color-2);   
+        padding: 10px;
+    }
+    
+    .form-control-home {
+        border-radius: 5px;
+        border: none;
+        border-bottom: 1px solid var(--base-line-color-2);
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.123);
+    }
+
+    .image-container {
+        height: 100px;
+        width: 100px;
+        background-color: rgba(255, 255, 255, 0.096);
+        border-radius: 10px;
+    }
+
+    .input-container[data-role="box-search"] {
+        width: 200px;
+    }
+
     .box-section {
         background-color: rgba(255, 255, 255, 0.06);
         border-radius: 5px;
         padding: 20px;
+        margin-bottom: 15px;
+        margin-top: 15px;
     }
 
     .container-section {
-        margin: 0 80px;
+        margin: 0 40px;
     }
-    
-    .table-home > tbody > tr > td {
+
+    .table-home>tbody>tr>td {
         padding: 10px 0;
     }
-    .table-home > tbody > tr > th {
+
+    .table-home>thead>tr>th>p {
         font-size: 18px;
+        margin: 0 10px;
     }
-    .table-home > tbody > tr {
+
+    .table-home>thead>tr,
+    .table-home>tbody>tr {
         border-bottom: 1px solid var(--base-line-color-2);
     }
 </style>
+
+<script>
+    if (window.location.search.includes("inner_html=true")) {
+        const newUrl = window.location.href.replace(/([&?]inner_html=true)(&|$)/, '$2').replace(/[?&]$/, '');
+        window.location.href = newUrl;
+    }
+    
+    function loadSectorData(searchTerm = '') {
+        $.getJSON("{% url 'get_all_sectors' %}?inner_html=true", { search: searchTerm }, function (data) {
+            let tableContent = '';
+            if (data.length > 0) {
+                $.each(data, function (index, sector) {
+                    tableContent += `
+                        <tr>
+                            <td class="text-center text-color-default">${sector.id}</td>
+                            <td class="text-center text-color-default">${sector.name}</td>
+                            <td class="text-center text-color-default">${sector.description}</td>
+                            <td class="text-center text-color-default redirect-component" data-url='/sector/${sector.id}/' style="cursor: pointer;"><i class="fas fa-edit"></i></td>
+                            <td class="text-center text-color-default" onclick="deleteSector('${sector.id}')"><i class="fas fa-trash-alt"></i></td>
+                        </tr>`;
+                });
+            } else {
+                tableContent = `
+                <tr>
+                    <td colspan="3" class="text-center w-full text-color-default">Nenhum setor cadastrado!</td>
+                </tr>`;
+            }
+
+            $('#sector-table').html(tableContent);
+            setComponents();
+        }).fail(function () {
+            console.log('Erro ao carregar setores');
+        });
+    }
+
+    loadSectorData();
+
+    $('#search-sectors-input').on('input', function () {
+        const searchTerm = $(this).val();
+        loadSectorData(searchTerm);
+    });
+    
+    function deleteSector(id) {
+        showPopup('Excluir setor', 'Tem certeza que deseja excluir este setor?', [
+            {
+                text: 'Cancelar',
+                action: function () {
+                    closePopup();
+                }
+            },
+            {
+                text: 'Excluir',
+                action: function () {
+                    loadContent(`/sector/delete/${id}/`);
+                }
+            }
+        ]);
+    }
+    function deleteBanner(id) {
+        showPopup('Excluir banner', 'Tem certeza que deseja excluir este banner?', [
+            {
+                text: 'Cancelar',
+                action: function () {
+                    closePopup();
+                }
+            },
+            {
+                text: 'Excluir',
+                action: function () {
+                    loadContent(`/sector/delete/banner/${id}/`);
+                }
+            }
+        ]);
+    }
+</script>

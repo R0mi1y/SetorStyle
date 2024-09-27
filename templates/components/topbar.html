@@ -1,13 +1,13 @@
 {% load static %}
 
 <nav class="topbar-container">
-    <div class="topbar-item logo-container">
+    <div class="topbar-item logo-container redirect-component" data-url="/">
         <img class="logo" src="{% static 'images/logo.png' %}" style="margin-left: 20px;" alt="SetorStyle logo">
         <p class="logo-name">SetorStyle</p>
     </div>
     <div class="topbar-item col-5" style="flex:1;">
         {% block content_topbar %}
-            <div class="input-container d-flex align-items-center">
+            <div class="input-container w-full d-flex align-items-center">
                 <i class="fas fa-search mr-2 text-color-default"></i>
                 <input type="text" class="search-input text-color-default" placeholder="Pesquisar...">
             </div>
@@ -52,7 +52,6 @@
     }
     
     .input-container {
-        width: 100%;
         border-radius: 5px;
         background-color: rgba(255, 255, 255, 0.137);
         padding: 10px 15px;

@@ -1,0 +1,18 @@
+<div id="banner-{{ banner.id }}-slide" class="w-full h-full d-flex justify-content-center align-items-center rounded">
+    
+</div>
+
+<style>
+    #banner-{{ banner.id }}-slide {
+        background-image: url("{{ banner.image.url }}"), url("");
+        background-repeat: no-repeat;
+    }
+</style>
+
+<script>
+    const img_{{ banner.id }} = new Image();
+    img_{{ banner.id }}.src = "{{ banner.image.url }}";
+    img_{{ banner.id }}.onerror = () => {
+        $('#banner-{{ banner.id }}-slide').html('<i class="fas fa-image icon"></i>');
+    }; 
+</script>

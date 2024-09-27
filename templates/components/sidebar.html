@@ -2,22 +2,22 @@
 
 <div id="nav-container" class="sidebar-container visible">
     <nav class="d-flex flex-column px-4">
-        <div class="logo-container sidebar">
+        <div class="logo-container sidebar redirect-component" data-url="/">
             <img class="logo" src="{% static 'images/logo.png' %}" alt="SetorStyle logo"><p class="logo-name">SetorStyle</p>
         </div>
-        <div class="btn-sidebar redirect-component" data-url='/sector/'>
+        <div class="btn-sidebar redirect-component-sidebar" data-url='/sector/'>
             <i class="fas fa-home"></i> Setor
         </div>
-        <div class="btn-sidebar redirect-component" data-url='/sector/add/'>
+        <div class="btn-sidebar redirect-component-sidebar" data-url='/sector/add/'>
             <i class="fas fa-user"></i> Setor add
         </div>
-        <div class="btn-sidebar redirect-component" data-url='/section/list/'>
+        <div class="btn-sidebar redirect-component-sidebar" data-url='/sector/list/'>
             <i class="fab fa-twitter"></i> Setor list
         </div>
-        <div class="btn-sidebar redirect-component" data-url='/section/detail/1/'>
+        <div class="btn-sidebar redirect-component-sidebar" data-url='/sector/1/'>
             <i class="fab fa-twitter"></i> Setor 1
         </div>
-        <div class="btn-sidebar redirect-component" data-url='/section/detail/2/'>
+        <div class="btn-sidebar redirect-component-sidebar" data-url='/sector/2/'>
             <i class="fab fa-twitter"></i> Setor 2
         </div>
     </nav>
@@ -52,10 +52,6 @@
         background-color: #9fd4cd !important;
     }
 
-    .btn-toggle-sidebar {
-        margin: 20px;
-    }
-    
     .btn-sidebar {
         width: 100%;
         padding: 15px;
@@ -108,6 +104,8 @@
     
     .btn-toggle-sidebar {
         position: fixed;
+        margin: 21px;
+        top: 0;
     }
 </style>
 
@@ -134,7 +132,7 @@
             }
         });
         
-        $(".redirect-component").click(function () {
+        $(".redirect-component-sidebar").click(function () {
             $('.btn-sidebar').removeClass('active');
             this.classList.add('active');
             loadContent($(this).attr('data-url'));
@@ -143,7 +141,7 @@
         let path = window.location.pathname;
         if (!path.endsWith("/")) path += "/";
         
-        $(".redirect-component").each(function () {
+        $(".redirect-component-sidebar").each(function () {
             if ($(this).attr('data-url') === path) {
                 $('.btn-sidebar').removeClass('active');
                 this.classList.add('active');
