@@ -1,18 +1,71 @@
-<div id="banner-{{ banner.id }}-slide" class="w-full h-full d-flex justify-content-center align-items-center rounded">
-    
+<div id="banner-{{ banner.id }}-slide" class="w-full h-full d-flex flex-column rounded">
+    <div id="banner-{{ banner.id }}-expand" class="banner-expand-icon"><i class="fas fa-expand"></i></div>
+    <h1 class="banner-{{ banner.id }}-title">{{ banner.title }}</h1>
+    <p class="banner-{{ banner.id }}-description">{{ banner.description }}</p>
+</div>
+<div id="banner-{{ banner.id }}-fullscreen" class="hidden fullscreen">
 </div>
 
 <style>
+    .fullscreen {
+        height: 100vh;
+        width: 100vw;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+        background-color: hsla(0, 0%, 0%, 0.6);
+    }
+    
     #banner-{{ banner.id }}-slide {
-        background-image: url("{{ banner.image.url }}"), url("");
+        background-image: url("{{ banner.image.url }}");
         background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center; 
+        justify-content: {{ banner.justify }}; 
+        align-items: {{ banner.align }};
+        padding: {{ banner.padding }}%;
+    }
+    
+    .banner-{{ banner.id }}-title {
+        text-align: center;
+        background-color: hsla(0, 0%, 0%, 0.3);  
+        font-size: {{ banner.size_title }}px;
+        padding: 1%; 
+        margin-bottom: 0;
+        width: {{ banner.width }}% !important;
+    }
+    
+    .banner-{{ banner.id }}-description {
+        text-align: center;
+        margin-bottom: 0;
+        background-color: hsla(0, 0%, 0%, 0.3);  
+        font-size: {{ banner.size_description }}px;
+        padding: 1%;   
+        width: {{ banner.width }}% !important;
     }
 </style>
 
 <script>
-    const img_{{ banner.id }} = new Image();
+    if (typeof img_{{ banner.id }} === 'undefined') {
+        var img_{{ banner.id }} = new Image();
+    }
+    
     img_{{ banner.id }}.src = "{{ banner.image.url }}";
     img_{{ banner.id }}.onerror = () => {
         $('#banner-{{ banner.id }}-slide').html('<i class="fas fa-image icon"></i>');
-    }; 
+    };
+    
+    $.get("{% url 'get_presentation_banner_preview' id=banner.id %}?inner_html=true")
+        .done(data => {
+            $('#banner-{{ banner.id }}-fullscreen').html(data);
+        });
+    
+    $('#banner-{{ banner.id }}-expand').click(() => {
+        $('#banner-{{ banner.id }}-fullscreen').removeClass('hidden');
+    });
+    
+    $('#banner-{{ banner.id }}-fullscreen').click(() => {
+        $('#banner-{{ banner.id }}-fullscreen').addClass('hidden'); // Ocultar o banner
+    });
 </script>

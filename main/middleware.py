@@ -15,6 +15,9 @@ class InnerHTMLMiddleware:
         if request.path.startswith(settings.STATIC_URL) or request.path.startswith(settings.MEDIA_URL):
             return response
         
+        if request.path.startswith('/sector/banner/'):
+            return response
+        
         elif request.method == 'GET' and not request.GET.get('inner_html') == 'true':
             template_name = response.template_name if hasattr(response, 'template_name') else '_base.html'
             context = response.context_data if hasattr(response, 'context_data') else {}

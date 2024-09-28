@@ -49,10 +49,13 @@ def create_or_edit_banner(request, id=None):
         form = BannerForm(request.POST, request.FILES, instance=banner_instance)
         
         if form.is_valid():
+            print(request.POST)
             banner = form.save()
 
             if not banner_instance:
                 sector.banners.add(banner)
+        else:
+            print(form.errors)      
     else:
         form = BannerForm(instance=banner_instance)
 
@@ -91,4 +94,6 @@ def delete_banner(request, id):
 def get_presentation_banner(request, id):
     banner = Banner.objects.filter(id=id).first()
     
-    return banner.get_presentation()
+    if not banner:
+        return redirect_inner_html('home')
+    return render(request, 'banners/banner_preview_base.html', {'banner': banner})

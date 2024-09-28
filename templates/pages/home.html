@@ -61,7 +61,7 @@
                         <th class="text-center text-color-table-title">
                             <p>Descrição</p>
                         </th>
-                        <th colspan="2" class="text-center text-color-table-title">
+                        <th colspan="3" class="text-center text-color-table-title">
                             <p>Ações</p>
                         </th>
                     </tr>
@@ -75,8 +75,10 @@
                         <td class="text-center text-color-default redirect-component"
                             data-url='{% url "details_sector" id=sector.id %}' style="cursor: pointer;"><i
                                 class="fas fa-edit"></i></td>
-                        <td class="text-center text-color-default" onclick="deleteSector('{{ sector.id }}');"><i
+                        <td class="text-center text-color-default" style="cursor: pointer;" onclick="deleteSector('{{ sector.id }}');"><i
                                 class="fas fa-trash-alt"></i></td>
+                        <td class="text-center text-color-default" style="cursor: pointer;"><i class="fas fa-desktop"></i></td>
+                                
                     </tr>
                     {% empty %}
                     <tr>
@@ -98,11 +100,11 @@
                     <div class="d-flex">
                         <form class="form-component w-full" action="{% url 'update_banner' id=form_banner.instance.id %}" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <input type="text" name="sector" value="{{ form_sector.instance.id }}" hidden="true">
+                            <input type="hidden" name="sector" value="{{ form_sector.instance.id }}">
                             {{ form_banner.as_p }}
                             <div class="d-flex w-full justify-content-around">
                                 <input type="submit" class="btn-submit" value="Salvar Banner">
-                                <div class="btn-submit redirect-component" onclick="deleteBanner('{{ form_banner.instance.id }}');">Deletar Banner</div> 
+                                <div class="btn-submit" onclick="deleteBanner('{{ form_banner.instance.id }}');">Deletar Banner</div> 
                             </div>
                         </form>
                     </div>
@@ -231,7 +233,8 @@
                             <td class="text-center text-color-default">${sector.name}</td>
                             <td class="text-center text-color-default">${sector.description}</td>
                             <td class="text-center text-color-default redirect-component" data-url='/sector/${sector.id}/' style="cursor: pointer;"><i class="fas fa-edit"></i></td>
-                            <td class="text-center text-color-default" onclick="deleteSector('${sector.id}')"><i class="fas fa-trash-alt"></i></td>
+                            <td class="text-center text-color-default" style="cursor: pointer;" onclick="deleteSector('${sector.id}')"><i class="fas fa-trash-alt"></i></td>
+                            <td class="text-center text-color-default" style="cursor: pointer;"><i class="fas fa-desktop"></i></td>
                         </tr>`;
                 });
             } else {

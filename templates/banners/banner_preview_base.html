@@ -1,0 +1,73 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ banner.title }}</title>
+    <link rel="icon" href="{% static 'images/icon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/vars.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="stylesheet" href="{% static "css/scrollbar.css" %}">
+    <link rel="stylesheet" href="{% static "css/popup.css" %}">
+</head>
+<body>
+    <div class="container-banner-preview">
+        <div id="banner-{{ banner.id }}-slide">
+            <h1 class="banner-{{ banner.id }}-title">{{ banner.title }}</h1>
+            <p class="banner-{{ banner.id }}-description">{{ banner.description }}</p>
+        </div>
+    </div>
+
+    <style>
+        * {
+            margin: 0;
+        }
+        
+        #banner-{{ banner.id }}-slide {
+            display: flex;
+            flex-direction: column;
+            background-image: url("{{ banner.image.url }}");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center; 
+            justify-content: {{ banner.justify }}; 
+            align-items: {{ banner.align }};
+            padding: {{ banner.padding }}%;
+            height: 100%;
+            aspect-ratio:  16 / 9;
+        }
+        
+        .container-banner-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--base-color);
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        .banner-{{ banner.id }}-title {
+            text-align: center;
+            color: white;
+            background-color: hsla(0, 0%, 0%, 0.3);  
+            font-size: {{ banner.size_title }}px;
+            padding: 1%; 
+            margin-bottom: 0;
+            width: {{ banner.width }}% !important;
+        }
+        
+        .banner-{{ banner.id }}-description {
+            text-align: center;
+            color: white;
+            margin-bottom: 0;
+            background-color: hsla(0, 0%, 0%, 0.3);  
+            font-size: {{ banner.size_description }}px;
+            padding: 1%;   
+            width: {{ banner.width }}% !important;
+        }
+    </style>
+</body>
+</html>

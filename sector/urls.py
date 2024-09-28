@@ -13,7 +13,7 @@ urlpatterns = [
     path('delete/banner/<int:id>/', delete_banner, name='delete_banner'),
     
     path('<int:id>/', detail_sector, name='details_sector'),
-    path('banner/<int:id>/', get_presentation_banner, name='get_presentation_banner'),
+    path('banner/preview/<int:id>/', get_presentation_banner, name='get_presentation_banner_preview'),
     
     # API
     path('api/all/', sector_all, name='get_all_sectors'),

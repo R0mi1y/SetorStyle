@@ -27,8 +27,12 @@ class SectorForm(forms.ModelForm):
 class BannerForm(forms.ModelForm):
     class Meta:
         model = Banner
-        fields = ['title', 'description', 'image']
+        fields = ['title', 'description', 'image', 'align', 'justify', 'width', 'padding', 'size_title', 'size_description']
         widgets = {
+            'size_title': forms.NumberInput(attrs={'class': 'form-control-home text-color-default w-full'}),
+            'size_description': forms.NumberInput(attrs={'class': 'form-control-home text-color-default w-full'}),
+            'width': forms.NumberInput(attrs={'class': 'form-control-home text-color-default w-full'}),
+            'padding': forms.NumberInput(attrs={'placeholder': 'Espaçamento interno', 'class': 'form-control-home text-color-default w-full'}),
             'title': forms.TextInput(attrs={'placeholder': 'Nome do Banner', 'class': 'form-control-home text-color-default w-full'}),
             'description': forms.Textarea(attrs={
                 'placeholder': 'Descrição do Banner', 
@@ -37,7 +41,9 @@ class BannerForm(forms.ModelForm):
                 'cols': 40, 
                 'maxlength': 500
             }),
-            'image': forms.FileInput(attrs={'class': 'form-control-home text-color-default w-full'})
+            'image': forms.FileInput(attrs={'class': 'form-control-home text-color-default w-full'}), 
+            'justify': forms.Select(attrs={'class': 'form-control-home text-color-default select-bg-gray w-full'}),
+            'align': forms.Select(attrs={'class': 'form-control-home text-color-default select-bg-gray w-full'}),
         }
         error_messages = {
             'name': {
